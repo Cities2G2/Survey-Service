@@ -10,4 +10,4 @@ wagner.invoke(require('./auth'), { app: app });
 app.use('/user', require('./routes/user')(wagner));
 
 app.listen(3002);
-console.log('Listening on port 3002!');
+console.log('TTPServer listening on port 3002!');
