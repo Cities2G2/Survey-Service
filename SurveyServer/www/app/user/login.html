@@ -1,0 +1,51 @@
+
+    <div class="row">
+        <head>
+            <title>Iniciar la sessió</title>
+        </head>
+
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 page-header">
+                <h2>
+                    <a href="http://www.upc.edu"><img src="images/logoUniversidad.png" /></a>
+                </h2>
+            </div>
+        </div>
+
+        <div class="col-sm-4 col-sm-offset-4 centered">
+            <div class="row">
+                <form name="dataInputForm" ng-submit="userCtrl.postLogin()">
+                    <div class="row">
+                        <h1> Iniciar la sessió</h1>
+                        <br>
+                        <p class="descripcio">  Identifiqueu-vos amb el nom d'usuari de la Intranet UPC.</p>
+                    </div>
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-addon form">Usuari</span>
+                            <input class="form-control" type="text" ng-model="userCtrl.userLogin"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon form">Contrasenya</span>
+                            <input class="form-control" type="text" ng-model="userCtrl.passwordLogin"/>
+                        </div>
+                    </div>
+                    <br>
+
+                        <input class="btn btn-default" ng-click="userCtrl.getLogin()" value="Entrar"/>
+                </form>
+
+            </div>
+            <br>
+            <h2>No podeu entrar?</h2>
+            <p>
+                Teniu que <a href="http://localhost:3000/#/register">registrar-vos </a> abans al Campus Virtual UPC</a>.
+            </p>
+        </div>
+
+
+
+
+    </div>
+
+

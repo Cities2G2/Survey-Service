@@ -1,0 +1,18 @@
+html,body {
+    height:100%
+
+}
+
+.centered {
+    text-align: center;
+
+}
+.input-login{
+    width: 80%;
+}
+body {
+    font-size:81.25%;
+    margin: 5px 5px 5px 5px;
+    min-width:400px;
+
+}

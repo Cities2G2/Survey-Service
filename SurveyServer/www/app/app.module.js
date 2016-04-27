@@ -1,3 +1,4 @@
-/**
- * Created by Seyo on 22/04/2016.
- */
+'use strict';
+
+angular
+    .module('clientNR',['ngRoute', 'jsbn.BigInteger','angular-biginteger']);
