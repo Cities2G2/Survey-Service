@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
 
-var surveySchema = {
-    subject: {
+Answer = new mongoose.Schema({
+    value: {
         type: String
     },
-    destiny: [
-        Question
-    ]
-};
+    state: {
+        type: Boolean
+    }
+});
 
 Question = new mongoose.Schema({
     formulation: {
@@ -18,14 +18,14 @@ Question = new mongoose.Schema({
     ]
 });
 
-Answer = new mongoose.Schema({
-    value: {
+var surveySchema = {
+    subject: {
         type: String
     },
-    state: {
-        type: Boolean
-    }
-});
+    destiny: [
+        Question
+    ]
+};
 
 module.exports = new mongoose.Schema(surveySchema, {versionKey: false});
 module.exports.categorySchema = surveySchema;

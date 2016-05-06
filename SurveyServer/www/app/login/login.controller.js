@@ -4,7 +4,7 @@ angular
     .module('surveyApp')
     .controller('loginController', loginController);
 
-function loginController($window, $scope, $http, BigInteger, rsaFunctions, bigInt){
+function loginController($window, $scope, $http, bigInt){
 
     var vm = this;
     vm.postLogin = postLogin;
@@ -23,8 +23,7 @@ function loginController($window, $scope, $http, BigInteger, rsaFunctions, bigIn
             data: JSON.stringify(user),
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
-            console.log(response);
-            $scope.$parent.$broadcast('getSubjects', response);
+            $scope.$parent.$broadcast('getSubjects', response.data);
             $window.location.href = '#/asignaturas'
         }, function errorCallback(response){
             console.log(response);

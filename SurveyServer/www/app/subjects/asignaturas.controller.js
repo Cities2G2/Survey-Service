@@ -3,18 +3,16 @@
  */'use strict';
 
 angular
-    .module('clientNR')
-    .controller('mainController', mainController);
+    .module('surveyApp')
+    .controller('subjectController', subjectController);
 
-function mainController($window, $scope, $http, BigInteger, rsaFunctions, bigInt){
-    var vm = this,
-        keys;
+function subjectController($window, $scope, $http){
+    var vm = this;
 
-    vm.res = "No data";
     vm.postData = postData;
     vm.getData = getData;
-    vm.n= "1";
-    vm.e= bigInt("65537");
+
+    vm.subjects = $scope.mainCtrl.subjects;
 
 
     function postData(){

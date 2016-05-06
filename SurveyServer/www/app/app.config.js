@@ -21,8 +21,9 @@ function config($routeProvider){
 
         })
         .when('/asignaturas',{
-            templateUrl: '/app/subject/asignaturas.html'
-
+            templateUrl: '/app/subjects/asignaturas.html',
+            controller: 'subjectController',
+            controllerAs: 'subjectCtrl'
         })
         .otherwise({
             redirectTo: '/login'
