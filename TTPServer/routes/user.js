@@ -100,7 +100,7 @@ module.exports = function (wagner) {
             res.status(200).send("pong!");
         }}));
 
-    user.post('/pseudo', wagner.invoke(function (Object) {
+    /*user.post('/pseudo', wagner.invoke(function (Object) {
         return function (req, res) {
             var subjectId = req.body.subjectId;
             var pseudo = req.body.pseudo;
@@ -113,7 +113,7 @@ module.exports = function (wagner) {
                 }
             });
         }
-    }));
+    }));*/
 
 
 

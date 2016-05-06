@@ -16,7 +16,8 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^1.0.0",
     "wagner-core": "0.2.0",
-    "cors": "2.7.1"
+    "cors": "2.7.1",
+    "big-integer": "1.6.12"
   },
   "devDependencies": {
     "gulp": "3.8.11",
