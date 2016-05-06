@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html ng-app="clientNR" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>ClienteNR</title>
-    <link rel="stylesheet" href="app/style/app.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<html ng-app="surveyApp" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>ClienteNR</title>
+        <link rel="stylesheet" href="app/style/app.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
-    <!-- google fonts -->
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-jsbn-big-integer/big-integer.js"></script>
-    <script src="bower_components/angular-biginteger/angular-biginteger.js"></script>
+        <!-- google fonts -->
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-jsbn-big-integer/big-integer.js"></script>
+        <script src="bower_components/angular-biginteger/angular-biginteger.js"></script>
 
-    <!--App fonts-->
-    <script src="app/app.module.js"></script>
-    <script src="app/app.config.js"></script>
+        <!--App fonts-->
+        <script src="app/app.module.js"></script>
+        <script src="app/app.config.js"></script>
 
 
-</head>
-<body>
-<br>
-<div class="row">
-    <div ng-view></div>
-</div>
-</body>
+    </head>
+    <body ng-controller="mainController as mainCtrl">
+        <br>
+        <div class="row">
+            <div ng-view></div>
+        </div>
+    </body>
 </html>
