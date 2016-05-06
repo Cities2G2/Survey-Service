@@ -1,14 +1,31 @@
 var mongoose = require('mongoose');
 
-var objectSchema = {
-    _id: { type: String },
-    source: {type: String},
-    destiny: {type: String},
-    dataC: { type:String },
-    key: {type: String},
-    dataCK: {type: String},
-    identData: {type: String}
+var surveySchema = {
+    subject: {
+        type: String
+    },
+    destiny: [
+        Question
+    ]
 };
 
-module.exports = new mongoose.Schema(objectSchema, {versionKey: false});
-module.exports.categorySchema = objectSchema;
+Question = new mongoose.Schema({
+    formulation: {
+        type: String
+    },
+    done: [
+        Answer
+    ]
+});
+
+Answer = new mongoose.Schema({
+    value: {
+        type: String
+    },
+    state: {
+        type: Boolean
+    }
+});
+
+module.exports = new mongoose.Schema(surveySchema, {versionKey: false});
+module.exports.categorySchema = surveySchema;

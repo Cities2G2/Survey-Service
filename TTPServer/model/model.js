@@ -11,8 +11,12 @@ module.exports = function(wagner) {
     var User =
         mongoose.model('User', require('./user'), 'users');
 
+    var Subject =
+        mongoose.model('Subject', require('./subject'), 'subjects');
+    
     var models = {
-        User: User
+        User: User,
+        Subject: Subject
     };
 
     // To ensure DRY-ness, register factories in a loop
