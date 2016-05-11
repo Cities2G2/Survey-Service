@@ -8,6 +8,12 @@ subjectSchema = {
     },
     teacher: {
         type: String
+    },
+    publicKey:{
+        type: Object
+    },
+    privateKey: {
+        type: Object
     }
 };
 

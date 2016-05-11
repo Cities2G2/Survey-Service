@@ -16,11 +16,12 @@ function config($routeProvider){
             templateUrl: '/app/register/register.html'
 
         })
-        .when('/encuesta',{
-            templateUrl: '/app/survey/encuesta.html'
-
+        .when('/survey',{
+            templateUrl: '/app/survey/survey.html',
+            controller: 'surveyController',
+            controllerAs: 'surveyCtrl'
         })
-        .when('/asignaturas',{
+        .when('/subjects',{
             templateUrl: '/app/subjects/asignaturas.html',
             controller: 'subjectController',
             controllerAs: 'subjectCtrl'

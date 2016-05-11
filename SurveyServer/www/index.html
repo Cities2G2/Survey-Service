@@ -2,7 +2,7 @@
 <html ng-app="surveyApp" lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>ClienteNR</title>
+        <title>Survey Service</title>
         <link rel="stylesheet" href="app/style/app.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -16,10 +16,15 @@
         <!--App fonts-->
         <script src="app/app.module.js"></script>
         <script src="app/app.config.js"></script>
+
+        <!--App CONTROLLERS-->
         <script src="app/main/main.controller.js"></script>
         <script src="app/login/login.controller.js"></script>
-        <script src="app/subjects/asignaturas.controller.js"></script>
+        <script src="app/subjects/subjects.controller.js"></script>
+        <script src="app/survey/survey.controller.js"></script>
 
+        <!--App SERVICES-->
+        <script src="app/src/rsa.service.js"></script>
 
     </head>
     <body ng-controller="mainController as mainCtrl">

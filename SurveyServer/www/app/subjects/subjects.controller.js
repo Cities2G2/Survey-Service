@@ -1,6 +1,4 @@
-/**
- * Created by ns on 05/05/16.
- */'use strict';
+'use strict';
 
 angular
     .module('surveyApp')
@@ -9,31 +7,27 @@ angular
 function subjectController($window, $scope, $http){
     var vm = this;
 
-    vm.postData = postData;
+    vm.selectSubject = selectSubject;
     vm.getData = getData;
 
     vm.subjects = $scope.mainCtrl.subjects;
+    console.log(vm.subjects);
 
-
-    function postData(){
-        var uri = 'http://localhost:3002/object/',
-            subjects = {
-                "subject1": "Subject1",
-                "subject2": "Subject2",
-                "subject3": "Subject3",
-                "subject4": "Subject4",
-                "subject5": "Subject5"
+    function selectSubject(){
+        var uri = 'http://localhost:3002/user/selectsubject',
+            postInfo = {
+                "pseudonym": $scope.mainCtrl.keys.publicKey.n.toString(10),
+                "subject": vm.subjectSelected
             };
 
         return $http({
             method: 'POST',
             url: uri,
-            data: JSON.stringify(subjects),
+            data: JSON.stringify(postInfo),
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
-            console.log(response);
-            vm.res = response.data;
-            postTTP();
+            $scope.$parent.$broadcast('postPseudonym', response.data);
+            $window.location.href = '#/survey';
         }, function errorCallback(response){
             console.log(response);
         });

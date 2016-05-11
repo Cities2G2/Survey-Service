@@ -4,7 +4,7 @@ angular
     .module('surveyApp')
     .controller('mainController', mainController);
 
-function mainController($window, $scope){
+function mainController($window, $scope, rsaFunctions, bigInt){
     var vm = this;
 
     vm.token = "";
@@ -12,7 +12,18 @@ function mainController($window, $scope){
     vm.nTTP = "";
     vm.subjects = [];
 
+    load();
+
+    function load(){
+        vm.keys = rsaFunctions.generateKeys(512);
+    }
+
     $scope.$on('getSubjects', function(evt, subjects){
         vm.subjects = subjects;
     });
+
+    $scope.$on('postPseudonym', function(evt, pseudonym){
+        vm.pseudonym = pseudonym;
+    });
+
 }

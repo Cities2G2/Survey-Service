@@ -24,7 +24,7 @@ function loginController($window, $scope, $http, bigInt){
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
             $scope.$parent.$broadcast('getSubjects', response.data);
-            $window.location.href = '#/asignaturas'
+            $window.location.href = '#/subjects'
         }, function errorCallback(response){
             console.log(response);
         });

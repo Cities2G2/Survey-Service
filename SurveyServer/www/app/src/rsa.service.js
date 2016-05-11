@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-    .module('clientNR')
+    .module('surveyApp')
     .factory('rsaFunctions', rsaFunctions);
 
 
@@ -11,7 +11,7 @@ function rsaFunctions(bigInt) {
         publicKey: publicKey,
         privateKey: privateKey,
         generateKeys: generateKeys,
-        modInv: modInv,
+        modInv: modInv
     };
 
     return service;

@@ -5,7 +5,7 @@ var status = require('http-status');
 var _ = require('underscore');
 var rsa = require('../src/rsa-big-integer.js');
 var bigInt = require('../src/big-integer-scii.js');
-
+keys = rsa.generateKeys(512);
 module.exports = function (wagner) {
     var user = express.Router();
     user.use(bodyparser.json());
@@ -23,10 +23,15 @@ module.exports = function (wagner) {
         return function(req, res) {
             Subject.findOne({name: req.body.name}, function(err, subject){
                 if(!subject){
+                    var subjectKeys = rsa.generateKeys(512);
+                    console.log(subjectKeys);
                     var newSubject = new Subject({
                         name: req.body.name,
-                        teacher: req.body.teacher
+                        teacher: req.body.teacher,
+                        publicKey: subjectKeys.publicKey,
+                        privateKey: subjectKeys.privateKey
                     });
+                    console.log(newSubject);
                     newSubject.save(function(err){
                         if(!err){
                             res.status(200).send(newSubject);
@@ -75,6 +80,18 @@ module.exports = function (wagner) {
         }
     }));
 
+    user.post('/selectsubject', wagner.invoke(function (Subject) {
+        return function(req, res) {
+            Subject.findOne({_id: req.body.subject}, function(err, subject){
+                if(!subject){
+                    res.status(404).send('Subject not found');
+                } else {
+                    res.status(200).send('OK');
+                }
+            });
+        }
+    }));
+
     user.post('/register', wagner.invoke(function (User) {
         return function(req, res) {
             User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
@@ -82,6 +99,7 @@ module.exports = function (wagner) {
                     return res.status(500).send(err);
                 }
                 passport.authenticate('local')(req, res, function () {
+                    //Recorrer subjects y enviar solo el nombre y el _id
                     res.status(200).send(user.subjects);
                 });
             });
