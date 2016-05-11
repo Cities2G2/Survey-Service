@@ -4,48 +4,21 @@ angular
     .module('surveyApp')
     .controller('loginController', loginController);
 
-function loginController($window, $scope, $http, bigInt){
+function loginController($window, $scope, bigInt, loginService){
 
     var vm = this;
     vm.postLogin = postLogin;
-    vm.getData = getData;
 
     function postLogin(){
-        var uri = 'http://localhost:3002/user/login',
-            user = {
-                "username": vm.userLogin,
-                "password": vm.passwordLogin
-            };
-
-        return $http({
-            method: 'POST',
-            url: uri,
-            data: JSON.stringify(user),
-            headers: {'Content-Type': 'application/json; charset=utf-8'}
-        }).then(function successCallback(response){
-            $scope.$parent.$broadcast('getSubjects', response.data.subjects);
-            $scope.$parent.$broadcast('getN', response.data.nTTP);
-            $scope.$parent.$broadcast('getN', response.data.eTTP);
-            $window.location.href = '#/subjects'
-        }, function errorCallback(response){
-            console.log(response);
-        });
-    }
-
-
-    function getData(){
-        var uri = 'http://localhost:3002/object/data';
-
-        return $http({
-            method: 'GET',
-            url: uri,
-            headers: {'Content-Type': 'application/json; charset=utf-8'}
-        }).then(function succesCallback(response){
-            vm.n=bigInt(response.data.data);
-
-            console.log(vm.n);
-        }, function errorCallback(response){
-            vm.res = "error" + response;
-        });
+        loginService.postLogin(vm.userLogin, vm.passwordLogin)
+            .then(function successCallback(response){
+                $scope.$parent.$broadcast('getSubjects', response.data.subjects);
+                $scope.$parent.$broadcast('getN', response.data.nTTP);
+                $scope.$parent.$broadcast('getN', response.data.eTTP);
+                $window.location.href = '#/subjects'
+            })
+            .catch(function errorCallback(response){
+                console.log(response);
+            });
     }
 }

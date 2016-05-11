@@ -22,7 +22,7 @@ function config($routeProvider){
             controllerAs: 'surveyCtrl'
         })
         .when('/subjects',{
-            templateUrl: '/app/subjects/asignaturas.html',
+            templateUrl: '/app/subjects/subjects.html',
             controller: 'subjectController',
             controllerAs: 'subjectCtrl'
         })
