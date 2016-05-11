@@ -23,7 +23,9 @@ function loginController($window, $scope, $http, bigInt){
             data: JSON.stringify(user),
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
-            $scope.$parent.$broadcast('getSubjects', response.data);
+            $scope.$parent.$broadcast('getSubjects', response.data.subjects);
+            $scope.$parent.$broadcast('getN', response.data.nTTP);
+            $scope.$parent.$broadcast('getN', response.data.eTTP);
             $window.location.href = '#/subjects'
         }, function errorCallback(response){
             console.log(response);

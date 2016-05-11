@@ -12,14 +12,18 @@ function mainController($window, $scope, rsaFunctions, bigInt){
     vm.nTTP = "";
     vm.subjects = [];
 
-    load();
 
-    function load(){
-        vm.keys = rsaFunctions.generateKeys(512);
-    }
 
     $scope.$on('getSubjects', function(evt, subjects){
         vm.subjects = subjects;
+    });
+
+    $scope.$on('getN', function(evt, n){
+        vm.nTTP = n;
+    });
+
+    $scope.$on('getE', function(evt, e){
+        vm.eTTP = e;
     });
 
     $scope.$on('postPseudonym', function(evt, pseudonym){

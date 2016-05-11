@@ -6,6 +6,9 @@ var _ = require('underscore');
 var rsa = require('../src/rsa-big-integer.js');
 var bigInt = require('../src/big-integer-scii.js');
 keys = rsa.generateKeys(512);
+
+
+
 module.exports = function (wagner) {
     var user = express.Router();
     user.use(bodyparser.json());
@@ -86,7 +89,9 @@ module.exports = function (wagner) {
                 if(!subject){
                     res.status(404).send('Subject not found');
                 } else {
-                    res.status(200).send('OK');
+                    var blindedPseudonym = bigInt(req.body.blindedPseudonym);
+                    var blindedSignedPs = blindedPseudonym.modPow(keys.privateKey.d,keys.publicKey.n);
+                    res.status(200).send(blindedSignedPs.toString(10));
                 }
             });
         }
@@ -108,7 +113,12 @@ module.exports = function (wagner) {
     user.post('/login', passport.authenticate('local'), function(req, res) {
         wagner.invoke(function(User){
             User.findOne({username: req.body.username}, function(err, user){
-                res.status(200).send(user.subjects);
+                var loginData = {
+                    nTTP: keys.publicKey.n.toString(10),
+                    eTTP: keys.publicKey.e.toString(10),
+                    subjects: user.subjects,
+                };
+                res.status(200).send(loginData);
             })
         });
     });

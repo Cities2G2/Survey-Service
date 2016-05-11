@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var _ = require('underscore');
+var rsa = require("../src/rsa-big-integer");
 
 module.exports = function(wagner) {
     mongoose.connect('mongodb://localhost:27017/surveyServiceTTP');
@@ -13,7 +14,7 @@ module.exports = function(wagner) {
 
     var Subject =
         mongoose.model('Subject', require('./subject'), 'subjects');
-    
+
     var models = {
         User: User,
         Subject: Subject
@@ -25,6 +26,9 @@ module.exports = function(wagner) {
             return value;
         });
     });
+
+
+
 
     return models;
 };
