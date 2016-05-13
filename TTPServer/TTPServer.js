@@ -8,6 +8,9 @@ var app = express();
 
 app.use(cors());
 
+//app.options(cors({origin:'http://localhost:3000'}));
+//app.use(cors({origin: 'http://localhost:3000'}));
+
 wagner.invoke(require('./auth'), { app: app });
 
 app.use('/user', require('./routes/user')(wagner));

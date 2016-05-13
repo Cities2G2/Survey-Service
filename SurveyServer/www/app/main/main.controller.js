@@ -11,8 +11,14 @@ function mainController($window, $scope, rsaFunctions, bigInt){
     vm.eTTP = "";
     vm.nTTP = "";
     vm.subjects = [];
+    vm.pageLocation = "";
 
+    $scope.$on('$locationChangeStart', function(event, next, current) {
 
+        if (vm.pageLocation == ""){
+            $window.location.href='#/login';
+        }
+    });
 
     $scope.$on('getSubjects', function(evt, subjects){
         vm.subjects = subjects;

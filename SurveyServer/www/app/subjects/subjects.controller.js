@@ -18,8 +18,9 @@ function subjectController($window, $scope, bigInt, subjectsService){
         subjectsService.selectSubject(vm.nTTP, vm.eTTP, vm.keys, vm.subjectSelected)
             .then(function successCallback(response){
                 alert('ya tienes tu pseudonimo firmado');
-                //$scope.$parent.$broadcast('postPseudonym', response.data);
-                //$window.location.href = '#/survey';
+                $scope.$parent.$broadcast('postPseudonym', response);
+                $scope.mainCtrl.pageLocation="survey";
+                $window.location.href = '#/survey';
             })
             .catch(function errorCallback(response){
                 console.log(response);

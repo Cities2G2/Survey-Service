@@ -9,12 +9,15 @@ subjectSchema = {
     teacher: {
         type: String
     },
-    publicKey:{
-        type: Object
+    n:{
+        type: String
     },
-    privateKey: {
-        type: Object
-    }
+    e: {
+        type: String
+    },
+    d: {
+        type: String
+    },
 };
 
 module.exports = new mongoose.Schema(subjectSchema, {versionKey: false});

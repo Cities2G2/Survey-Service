@@ -22,6 +22,12 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
                     "blindedPseudonym": blindPs.toString(10),
                     "subject": subjectSelected
                 };
+        console.log('Nttp es: ',nTTP_bi);
+        console.log('Ettp es: ',eTTP_bi);
+        console.log('R es: ',r);
+        console.log('N es: ',n);
+        console.log('blindPs: ',blindPs);
+
 
         $http({
             method: 'POST',
@@ -29,8 +35,10 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
             data: JSON.stringify(postInfo),
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
-            var blindedSignedPs=bigInt(response.blindedSignedPs);
+            var blindedSignedPs=bigInt(response.data);
+            console.log('blindedSignedPs',blindedSignedPs);
             var signedPs = blindedSignedPs.multiply(rsaFunctions.modInv(r,nTTP_bi));
+            console.log('signedPs',signedPs);
             deferred.resolve(signedPs);
         }, function errorCallback(response){
             deferred.reject(response);

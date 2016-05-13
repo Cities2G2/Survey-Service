@@ -13,7 +13,6 @@ function loginService($http, $q){
                 "username": userLogin,
                 "password": passwordLogin
             };
-
         $http({
             method: 'POST',
             url: uri,
@@ -24,7 +23,6 @@ function loginService($http, $q){
         }, function errorCallback(response){
             deferred.reject(response);
         });
-
         return deferred.promise;
     };
 }

@@ -14,7 +14,8 @@ function loginController($window, $scope, bigInt, loginService){
             .then(function successCallback(response){
                 $scope.$parent.$broadcast('getSubjects', response.data.subjects);
                 $scope.$parent.$broadcast('getN', response.data.nTTP);
-                $scope.$parent.$broadcast('getN', response.data.eTTP);
+                $scope.$parent.$broadcast('getE', response.data.eTTP);
+                $scope.mainCtrl.pageLocation="subjects";
                 $window.location.href = '#/subjects'
             })
             .catch(function errorCallback(response){

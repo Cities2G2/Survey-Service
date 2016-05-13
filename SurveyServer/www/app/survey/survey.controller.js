@@ -6,5 +6,9 @@ angular
 
 function surveyController($window, $scope, $http) {
     var vm = this;
+    console.log('Survey controller');
+    console.log($scope.mainCtrl.pseudonym);
+    console.log($scope.mainCtrl.pagelocation);
+
 
 }
