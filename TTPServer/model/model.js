@@ -3,7 +3,7 @@ var _ = require('underscore');
 var rsa = require("../src/rsa-big-integer");
 
 module.exports = function(wagner) {
-    mongoose.connect('mongodb://localhost:27017/surveyServiceTTP');
+    mongoose.connect('mongodb://localhost:27017/surveyService');
 
     wagner.factory('db', function() {
         return mongoose;

@@ -8,7 +8,7 @@ var app = express();
 
 app.use(cors());
 
-app.use('/object', require('./routes/survey')(wagner));
+app.use('/survey', require('./routes/survey')(wagner));
 
 app.use(express.static('www'));
 

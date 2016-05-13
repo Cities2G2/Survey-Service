@@ -7,14 +7,10 @@ var rsa = require('../src/rsa-big-integer.js');
 var bigInt = require('../src/big-integer-scii.js');
 keys = rsa.generateKeys(512);
 
-
-
-
 module.exports = function (wagner) {
     var user = express.Router();
     user.use(bodyparser.json());
 
-    ////INICIALIZO DB CON 3 ASIGNATURAS////
     wagner.invoke(function(Subject, User){
 
         var newSubject1 = new Subject({
@@ -24,7 +20,7 @@ module.exports = function (wagner) {
             e: "65537",
             d: "3117192651188561804828845126616700293795387800548216885050418705951904180045652087527879073626244456705770340048171104048072877318542995851859221369959553"
         });
-        //console.log(newSubject1);
+
         Subject.findOne({name: newSubject1.name}, function(err, subject){
             if(!subject){
                 newSubject1.save(function(err){
@@ -47,7 +43,7 @@ module.exports = function (wagner) {
             e: "65537",
             d: "2998468937622668979471963618357261945316633268212617731848461279126155068230677407589650475405033708930158599146339582948196914641759164061385936453532773"
         });
-        //console.log(newSubject2);
+
         Subject.findOne({name: newSubject2.name}, function(err, subject){
             if(!subject){
                 newSubject2.save(function(err){
@@ -62,8 +58,6 @@ module.exports = function (wagner) {
             }
         });
 
-
-
         var newSubject3 = new Subject({
             name: "cities3",
             teacher: "Juan3",
@@ -71,7 +65,7 @@ module.exports = function (wagner) {
             e: "65537",
             d: "4699163499804778367860184203329849688720224616932515398591995845911022070200314094403317952789136192840541830557305165167439388979384661199354514430265473"
         });
-        //console.log(newSubject3);
+
         Subject.findOne({name: newSubject3.name}, function(err, subject){
             if(!subject){
                 newSubject3.save(function(err){
@@ -85,10 +79,6 @@ module.exports = function (wagner) {
                 console.log(newSubject3.name + " ya existe")
             }
         });
-        ///Finalizo añadir 3 subjects///
-
-        ///Añado 2 users///
-
 
         var newUser1 = new User({
             username: "alex",
@@ -118,7 +108,6 @@ module.exports = function (wagner) {
             }
         });
 
-
         var newUser2 = new User({
             username: "dani",
             password: "dani"
@@ -130,7 +119,7 @@ module.exports = function (wagner) {
                     if (err) {
                         console.log("no se pudo registrar alex");
                     }else{
-                        console.log("dani registrado")
+                        console.log("dani registrado");
                         userr.subjects.push(newSubject1);
                         userr.subjects.push(newSubject3);
                         userr.save(function(err){
@@ -146,13 +135,8 @@ module.exports = function (wagner) {
                 console.log("user dani ya existe");
             }
         });
-
-        ///acabo añadir 2 usesrs///
-
     });
-
-
-
+    
     user.get('/', wagner.invoke(function (User) {
         return function (req, res) {
             User.find(function (err, users) {
@@ -199,23 +183,32 @@ module.exports = function (wagner) {
                 if(!user){
                     res.status(404).send('User not found');
                 } else {
-                    Subject.findOne({name: req.body.name}, function(err,subject){
+                    Subject.findOne({name: req.body.name}, {_id:1, name:1}, function(err,subject){
                         if(!subject){
                             res.status(404).send('Subject not found');
                         } else {
-                            //Comprobar que la asignatura no existe
-                            user.subjects.push(subject);
-                            user.save(function(err){
-                                if(!err){
-                                    res.status(200).send('Subject added to User');
-                                } else {
-                                    if (err.name == 'ValidationError') {
-                                        res.status(400).send('Validation error');
-                                    } else {
-                                        res.status(500).send('Server error');
-                                    }
+                            var userSubjectExist = false;
+                            _.each(user.subjects, function(sub){
+                                if (subject._id.equals(sub._id)){
+                                    userSubjectExist = true;
                                 }
-                            })
+                            });
+                            if (userSubjectExist){
+                                res.status(400).send('This subjects si already in user');
+                            } else {
+                                user.subjects.push(subject);
+                                user.save(function (err) {
+                                    if (!err) {
+                                        res.status(200).send('Subject added to User');
+                                    } else {
+                                        if (err.name == 'ValidationError') {
+                                            res.status(400).send('Validation error');
+                                        } else {
+                                            res.status(500).send('Server error');
+                                        }
+                                    }
+                                })
+                            }
                         }
                     })
                 }
@@ -247,7 +240,6 @@ module.exports = function (wagner) {
                     return res.status(500).send(err);
                 }
                 passport.authenticate('local')(req, res, function () {
-                    //Recorrer subjects y enviar solo el nombre y el _id
                     res.status(200).send(user.subjects);
                 });
             });
@@ -271,24 +263,6 @@ module.exports = function (wagner) {
         return function(req, res){
             res.status(200).send("pong!");
         }}));
-
-    /*user.post('/pseudo', wagner.invoke(function (Object) {
-        return function (req, res) {
-            var subjectId = req.body.subjectId;
-            var pseudo = req.body.pseudo;
-            var Pseudo= bigInt(pseudo);//Recupero el pseudonimo en forma de bigint
-            Subject.find(function (err, keys) {//Busco el Subject via el ID
-                if (err) res.status(500).send('Subject not found');
-                else{
-                    var signedMsg = Pseudo.modPow(keys.privateKey.d,keys.publicKey.n);//Firmo el pseudonimo con la privada del Subject
-                    res.status(200).send(signedMsg);
-                }
-            });
-        }
-    }));*/
-
-
-
 
     return user;
 };
