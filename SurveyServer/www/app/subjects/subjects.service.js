@@ -16,6 +16,7 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
             deferred = $q.defer(),
             r = bigInt.randBetween(1, nTTP_bi),
             n = bigInt(keys.publicKey.n.toString(10)),
+            e = bigInt(keys.publicKey.e.toString(10)),
             blindPs = n.multiply(r.modPow(eTTP_bi, nTTP_bi)).mod(nTTP_bi),
             uri = 'http://localhost:3002/user/selectsubject',
                 postInfo = {
@@ -28,6 +29,7 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
         console.log('N es: ',n);
         console.log('blindPs: ',blindPs);
 
+        var toBlind = keys.publicKey.e.toString(10) + '/' + keys.publicKey.n.toString(10);
 
         $http({
             method: 'POST',

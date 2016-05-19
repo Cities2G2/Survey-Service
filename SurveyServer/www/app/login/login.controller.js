@@ -23,3 +23,4 @@ function loginController($window, $scope, bigInt, loginService){
             });
     }
 }
+
