@@ -1,21 +1,16 @@
 'use strict';
 
 angular
-    .module('clientNR')
-    .controller('mainController', mainController);
+    .module('surveyApp')
+    .controller('registerController', registerController);
 
-function mainController($window, $scope, $http, BigInteger, rsaFunctions, bigInt){
-    var vm = this,
-        keys;
+function registerController($window, $scope, $http, bigInt){
 
-    vm.res = "No data";
-    vm.postData = postData;
+    var vm = this;
+    vm.postRegister = postRegister;
     vm.getData = getData;
-    vm.n= "1";
-    vm.e= bigInt("65537");
 
-
-    function postData(){
+    function postRegister(){
         var uri = 'http://localhost:3002/user/register',
             user = {
                 "username": vm.userLogin,
@@ -28,14 +23,12 @@ function mainController($window, $scope, $http, BigInteger, rsaFunctions, bigInt
             data: JSON.stringify(user),
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
-            console.log(response);
-            vm.res = response.data;
-            postTTP();
+            $window.location.href = '#/login'
         }, function errorCallback(response){
             console.log(response);
         });
-    }
 
+    }
 
     function getData(){
         var uri = 'http://localhost:3002/object/data';
@@ -52,5 +45,5 @@ function mainController($window, $scope, $http, BigInteger, rsaFunctions, bigInt
             vm.res = "error" + response;
         });
     }
-}
 
+}

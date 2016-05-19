@@ -47,4 +47,25 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
         return deferred.promise;
     };
 
+
+    //Dani
+    this.postSurvey = function(seudonimo){
+        var deferred = $q.defer(),
+            uri = 'http://localhost:3000/survey/askSurvey',
+            datos = {
+                "seudonimo": seudonimo
+            };
+        $http({
+            method: 'POST',
+            url: uri,
+            data: JSON.stringify(datos),
+            headers: {'Content-Type': 'application/json; charset=utf-8'}
+        }).then(function successCallback(response){
+            deferred.resolve(response);
+        }, function errorCallback(response){
+            deferred.reject(response);
+        });
+        return deferred.promise;
+    };
+
 }
