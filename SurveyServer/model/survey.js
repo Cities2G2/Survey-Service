@@ -13,7 +13,7 @@ Question = new mongoose.Schema({
     formulation: {
         type: String
     },
-    done: [
+    answers: [
         Answer
     ]
 });
@@ -22,7 +22,7 @@ var surveySchema = {
     subject: {
         type: String
     },
-    destiny: [
+    questions: [
         Question
     ]
 };
