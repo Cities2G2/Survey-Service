@@ -54,6 +54,20 @@ module.exports = function (wagner) {
         }
     }));
 
+    survey.get('/getResults/:subject', wagner.invoke(function (Survey) {
+        console.log("GET survey/getResults");
+        return function (req, res) {
+            console.log("GET - /object/:subject");
+            console.log('La asignatura que me pide results.controller es: '+ req.body.surveySubject);
+           /* Object.find(function (err, objects) {
+                if (err) res.send(500, "Mongo Error");
+                else res.send(200, objects);
+            });*/
+        }
+    }));
+
+
+
 
 
     return survey;
