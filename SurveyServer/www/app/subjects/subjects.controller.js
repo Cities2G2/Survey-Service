@@ -12,6 +12,8 @@ function subjectController($window, $scope, bigInt, subjectsService){
     vm.nTTP=$scope.mainCtrl.nTTP;
     vm.eTTP=$scope.mainCtrl.eTTP;
     vm.keys = subjectsService.load();
+    vm.postSurvey = postSurvey;
+    vm.postResults = postResults;
 
 
     function selectSubject(){
@@ -29,9 +31,6 @@ function subjectController($window, $scope, bigInt, subjectsService){
     }
 
 
-    //Dani
-    vm.postSurvey = postSurvey;
-
     function postSurvey(){
 
         //var texto = 'DaniVilesFlorejachs';
@@ -47,9 +46,9 @@ function subjectController($window, $scope, bigInt, subjectsService){
             });
     }
 
-    vm.postResults = postResults;
+
     function postResults(){
-        console.log("som aqui");
+        console.log("som al postResults");
         $scope.mainCtrl.pageLocation="results";
         $window.location.href = '#/results';
 
