@@ -9,14 +9,18 @@ module.exports = function(wagner) {
     });
 
     var Survey =
-        mongoose.model('Survey', require('./survey.js'), 'surveys');
+        mongoose.model('Survey', require('./survey'), 'surveys');
+
+    var ResolvedSurvey =
+        mongoose.model('ResolvedSurvey', require('./resolvedSurvey'), 'resolvedSurveys');
 
     var Subject =
         mongoose.model('Subject', require('./subject'), 'subjects');
 
     var models = {
         Survey: Survey,
-        Subject: Subject
+        Subject: Subject,
+        ResolvedSurvey: ResolvedSurvey
     };
 
     // To ensure DRY-ness, register factories in a loop
