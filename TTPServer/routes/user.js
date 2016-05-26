@@ -225,9 +225,23 @@ module.exports = function (wagner) {
                 } else {
                     var blindedPseudonym = bigInt(req.body.blindedPseudonym);
                     console.log('blindedPseudonym: ',blindedPseudonym);
-                    var blindedSignedPs = blindedPseudonym.modPow(keys.privateKey.d,keys.publicKey.n);
+                    //var blindedSignedPs = blindedPseudonym.modPow(keys.privateKey.d,keys.publicKey.n);
+                    var blindedSignedPs = blindedPseudonym.modPow(subject.d,subject.n);
                     console.log('blindedSignedPs: ',blindedSignedPs);
                     res.status(200).send(blindedSignedPs.toString(10));
+                }
+            });
+        }
+    }));
+
+    user.post('/getParams', wagner.invoke(function (Subject) {
+        return function (req, res) {
+            Subject.findOne({_id: req.body.subject},function (err, subject) {
+                if(!subject){
+                    console.log("subject not found");
+                }else{
+                    console.log("get params subject es",subject.name);
+                    res.status(200).send(subject);
                 }
             });
         }

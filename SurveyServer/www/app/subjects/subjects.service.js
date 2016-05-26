@@ -11,6 +11,8 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
     };
 
     this.selectSubject = function(nTTP, eTTP, keys, subjectSelected){
+
+
         var nTTP_bi = bigInt(nTTP),
             eTTP_bi = bigInt(eTTP),
             deferred = $q.defer(),
@@ -38,7 +40,7 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
             var blindedSignedPs=bigInt(response.data);
-            console.log('blindedSignedPs',blindedSignedPs);
+            console.log('blindedSignedPs(lo que me llega d ttpserver)',blindedSignedPs);
             var signedPs = blindedSignedPs.multiply(rsaFunctions.modInv(r,nTTP_bi));
             console.log('signedPs',signedPs);
             deferred.resolve(signedPs);
@@ -51,11 +53,12 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
 
 
     //Dani
-    this.postSurvey = function(seudonimo){
+    this.postSurvey = function(seudonimo,subject){
         var deferred = $q.defer(),
             uri = 'http://localhost:3000/survey/askSurvey',
             datos = {
-                "seudonimo": seudonimo
+                "seudonimo": seudonimo,
+                "subject": subject
             };
         $http({
             method: 'POST',
@@ -70,4 +73,23 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
         return deferred.promise;
     };
 
+
+    this.getParams = function(subject){
+        var deferred = $q.defer(),
+            uri = 'http://localhost:3002/user/getParams',
+            datos = {
+                "subject": subject
+            };
+        $http({
+            method: 'POST',
+            url: uri,
+            data: JSON.stringify(datos),
+            headers: {'Content-Type': 'application/json; charset=utf-8'}
+        }).then(function successCallback(response){
+            deferred.resolve(response);
+        }, function errorCallback(response){
+            deferred.reject(response);
+        });
+        return deferred.promise;
+    }
 }
