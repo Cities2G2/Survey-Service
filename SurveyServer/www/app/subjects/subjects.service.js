@@ -126,10 +126,10 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
            var n = bigInt(keys.publicKey.n.toString(10)),
-                e = bigInt(keys.publicKey.e.toString(10));
+                d = bigInt(keys.privateKey.d.toString(10));
             var resBI = bigInt(response.data);
             console.log(resBI.toString(10));
-            var res = resBI.modPow(e,n);
+            var res = resBI.modPow(d,n);
             console.log("res",res.toString());
             deferred.resolve(res);
         }, function errorCallback(response){
