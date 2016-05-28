@@ -30,20 +30,7 @@ module.exports = function (wagner) {
 
         return function(req, res) {
 
-            console.log('El seudónimo que me ha enviado subjects.controller es: '+ req.body.seudonimo);
-            console.log('El subject que me ha enviado subjects.controller es: '+ req.body.subject);
-            signedPs = bigInt(req.body.seudonimo);
-            subjectN = bigInt(subject.n);
-            subjectE = bigInt(subject.e);
-
-            Ps = bigInt(signedPs.modPow(subjectE,subjectN));
-            console.log("la clave publica del cliente es:",Ps.toString());
-            var m  = bigInt("encuesta");
-            var c = m.modPow(subjectE,Ps);
-            console.log("encuesta cifrado con n es: ",c.toString(10));
-            res.status(200).send(c);
-
-            /*Subject.findOne({_id: req.body.subject}, function(err, subject){
+            Subject.findOne({_id: req.body.subject}, function(err, subject){
                 if(!subject){
                    console.log("subject not found");
                 }else{
@@ -59,7 +46,7 @@ module.exports = function (wagner) {
                 var c = m.modPow(subjectE,Ps);
                 res.status(200).send(c);
 
-            });*/
+            });
 
 
 
