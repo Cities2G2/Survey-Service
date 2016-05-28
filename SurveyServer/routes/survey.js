@@ -25,7 +25,6 @@ module.exports = function (wagner) {
 
 
 
-    //Dani
     survey.post('/askSurvey', wagner.invoke(function(Survey,Subject){
         console.log("POST survey/askSurvey");
 
@@ -33,7 +32,18 @@ module.exports = function (wagner) {
 
             console.log('El seudónimo que me ha enviado subjects.controller es: '+ req.body.seudonimo);
             console.log('El subject que me ha enviado subjects.controller es: '+ req.body.subject);
-            Subject.findOne({_id: req.body.subject}, function(err, subject){
+            signedPs = bigInt(req.body.seudonimo);
+            subjectN = bigInt(subject.n);
+            subjectE = bigInt(subject.e);
+
+            Ps = bigInt(signedPs.modPow(subjectE,subjectN));
+            console.log("la clave publica del cliente es:",Ps.toString());
+            var m  = bigInt("encuesta");
+            var c = m.modPow(subjectE,Ps);
+            console.log("encuesta cifrado con n es: ",c.toString(10));
+            res.status(200).send(c);
+
+            /*Subject.findOne({_id: req.body.subject}, function(err, subject){
                 if(!subject){
                    console.log("subject not found");
                 }else{
@@ -45,9 +55,11 @@ module.exports = function (wagner) {
 
                 Ps = bigInt(signedPs.modPow(subjectE,subjectN));
                 console.log("la clave publica del cliente es:",Ps.toString());
+                var m  = bigInt("encuesta");
+                var c = m.modPow(subjectE,Ps);
+                res.status(200).send(c);
 
-
-            });
+            });*/
 
 
 
@@ -74,6 +86,20 @@ module.exports = function (wagner) {
             })*/
         }
     }));
+
+    survey.get('/getResults/:subject', wagner.invoke(function (Survey) {
+        console.log("GET survey/getResults");
+        return function (req, res) {
+            console.log("GET - /object/:subject");
+            console.log('La asignatura que me pide results.controller es: '+ req.body.surveySubject);
+           /* Object.find(function (err, objects) {
+                if (err) res.send(500, "Mongo Error");
+                else res.send(200, objects);
+            });*/
+        }
+    }));
+
+
 
 
 

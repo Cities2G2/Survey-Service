@@ -12,6 +12,8 @@ function subjectController($window, $scope, bigInt, subjectsService,$q){
     //vm.nTTP=$scope.mainCtrl.nTTP;
     //vm.eTTP=$scope.mainCtrl.eTTP;
     vm.keys = subjectsService.load();
+    vm.postSurvey = postSurvey;
+    vm.postResults = postResults;
 
 
     function selectSubject(){
@@ -34,22 +36,28 @@ function subjectController($window, $scope, bigInt, subjectsService,$q){
     }
 
 
-    //Dani
-    vm.postSurvey = postSurvey;
 
     function postSurvey(subject){
+
 
         //var texto = 'DaniVilesFlorejachs';
         console.log('El seudónimo que envio es: '+ $scope.mainCtrl.pseudonym.toString());
         subjectsService.postSurvey($scope.mainCtrl.pseudonym.toString(),subject)
             .then(function successCallback(response){
-                $scope.mainCtrl.pageLocation="survey";
-                $window.location.href = '#/survey';
+                if(res.equals("encuesta")){
+                    $scope.mainCtrl.pageLocation="survey";
+                    $window.location.href = '#/survey';
+                }else{
+                    alert("Tu pseudonimo no es correcto");
+                }
+
+
             })
             .catch(function errorCallback(response){
                 console.log(response);
             });
     }
+
 
     vm.getParams = getParams;
 
@@ -74,8 +82,9 @@ function subjectController($window, $scope, bigInt, subjectsService,$q){
     }
 
     vm.postResults = postResults;
+
     function postResults(){
-        console.log("som aqui");
+        console.log("som al postResults");
         $scope.mainCtrl.pageLocation="results";
         $window.location.href = '#/results';
 

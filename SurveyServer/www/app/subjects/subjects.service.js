@@ -25,6 +25,7 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
                     "blindedPseudonym": blindPs.toString(10),
                     "subject": subjectSelected
                 };
+
         console.log('Nttp es: ',nTTP_bi);
         console.log('Ettp es: ',eTTP_bi);
         console.log('R es: ',r);
@@ -39,11 +40,31 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
             data: JSON.stringify(postInfo),
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
-            var blindedSignedPs=bigInt(response.data);
-            console.log('blindedSignedPs(lo que me llega d ttpserver)',blindedSignedPs);
-            var signedPs = blindedSignedPs.multiply(rsaFunctions.modInv(r,nTTP_bi));
-            console.log('signedPs',signedPs);
-            deferred.resolve(signedPs);
+
+            console.log(response);
+            var blindedSignedPsCrypto = response.data.data,
+                identData = response.data.identData;
+
+            getKeyTTP(response, keys)
+                .then(function successCallback(){
+                    getKeyNR(identData)
+                        .then(function successCallback(response){
+                            console.log('Success');
+                            console.log(response);
+                            if (identData == response.data.identData){
+                                var bytes  = CryptoJS.AES.decrypt(blindedSignedPsCrypto, response.data.key);
+                                var blindedSignedPs = bytes.toString(CryptoJS.enc.Utf8);
+                                var blindedSignedPsBI = bigInt(blindedSignedPs.toString('hex'), 16);
+                                var signedPs = blindedSignedPsBI.multiply(rsaFunctions.modInv(r,nTTP_bi));
+                                deferred.resolve(signedPs);
+                            }
+                        }, function errorCallback(response){
+                            console.log(response);
+                        });
+                }, function errorCallback(response){
+                    console.log(response);
+                });
+
         }, function errorCallback(response){
             deferred.reject(response);
         });
@@ -51,6 +72,44 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
         return deferred.promise;
     };
 
+    function getKeyTTP(response, keys){
+        var deferred = $q.defer(),
+            hash = CryptoJS.SHA1(response.data.data).toString(),
+            proofString = response.data.identData + "AAA" + hash,
+            proofBigInt = bigInt(proofString.toString('hex'), 16),
+            proofRec = keys.privateKey.encrypt(proofBigInt),
+            uri = 'http://localhost:3002/NR/' + response.data.identData,
+            getKeyMsg = {
+                PR: proofRec
+            };
+        $http({
+            method: 'POST',
+            url: uri,
+            data: JSON.stringify(getKeyMsg),
+            headers: {'Content-Type': 'application/json; charset=utf-8'}
+        }).then(function successCallback(response){
+            deferred.resolve(response);
+        }, function errorCallback(response){
+            deferred.reject(response);
+        });
+
+        return deferred.promise;
+    }
+
+    function getKeyNR(identData){
+        var deferred = $q.defer(),
+            uri = 'http://localhost:3004/NR/' + identData;
+        $http({
+            method: 'GET',
+            url: uri,
+            headers: {'Content-Type': 'application/json; charset=utf-8'}
+        }).then(function successCallback(response){
+            deferred.resolve(response);
+        }, function errorCallback(response){
+            deferred.reject(response);
+        });
+        return deferred.promise;
+    }
 
     //Dani
     this.postSurvey = function(seudonimo,subject){
@@ -66,7 +125,13 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
             data: JSON.stringify(datos),
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
-            deferred.resolve(response);
+           var n = bigInt(keys.publicKey.n.toString(10)),
+                e = bigInt(keys.publicKey.e.toString(10));
+            var resBI = bigInt(response.data);
+            console.log(resBI.toString(10));
+            var res = resBI.modPow(e,n);
+            console.log("res",res.toString());
+            deferred.resolve(res);
         }, function errorCallback(response){
             deferred.reject(response);
         });

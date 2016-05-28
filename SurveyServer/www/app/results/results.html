@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-sm-10 col-sm-offset-1 page-header">
+        <h2>
+            <a href="http://www.upc.edu"><img class="mediana" src="../images/logoUniversidad.png" /></a>
+        </h2>
+    </div>
+</div>
+
+<div class="col-sm-8 col-sm-offset-1 ">
+    <div class="row">
+        <form name="dataInputForm" ng-submit="resultsCtrl.getResults()">
+            <div class="row">
+                <h1> Resultats de les enquestes </h1>
+            </div>
+            <br>
+            <div class="row">
+
+                <form action="action_page.php">
+
+                    <div ng-app="" ng-init="names=[
+                        'Cities 1',
+                        'Cities 2',
+                        'Cities 3',
+                        'Cities 4']">
+
+                        <p>Escollir l'assignatura que vols consultar els resultats de les enquestes:</p>
+                        <ul>
+                            <li ng-repeat="x in names">
+                                {{ x }}  <input type="radio" ng-model="resultsCtrl.subjectSelected" value="{{ x }}" checked> </li>
+
+                        </ul>
+                    </div>
+                    <br>
+                    <input class="btn btn-default" type="submit" value="Consultar enquesta"/>
+                </form>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

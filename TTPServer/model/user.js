@@ -25,6 +25,9 @@ User = new mongoose.Schema({
     password: {
         type: String
     },
+    type: {
+        type: String
+    },
     subjects:[Subject]
 });
 

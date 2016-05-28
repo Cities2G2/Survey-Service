@@ -1,0 +1,24 @@
+{
+  "name": "Survey_Service_NR",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node TTPServer"
+  },
+  "dependencies": {
+    "mongoose": "~3.6.11",
+    "body-parser": "^1.5.1",
+    "underscore": "1.5.2",
+    "http-status": "0.1.8",
+    "express": "~4.12.3",
+    "express-session": "1.13.0",
+    "wagner-core": "0.2.0",
+    "cors": "2.7.1",
+    "big-integer": "1.6.12"
+  },
+  "devDependencies": {
+    "gulp": "3.8.11",
+    "gulp-mocha": "2.0.1",
+    "mocha": "2.2.4"
+  }
+}

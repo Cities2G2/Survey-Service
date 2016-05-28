@@ -5,6 +5,7 @@ var status = require('http-status');
 var _ = require('underscore');
 var rsa = require('../src/rsa-big-integer.js');
 var bigInt = require('../src/big-integer-scii.js');
+var CryptoJS = require("crypto-js");
 keys = rsa.generateKeys(512);
 
 module.exports = function (wagner) {
@@ -136,7 +137,7 @@ module.exports = function (wagner) {
             }
         });
     });
-    
+
     user.get('/', wagner.invoke(function (User) {
         return function (req, res) {
             User.find(function (err, users) {
@@ -216,19 +217,51 @@ module.exports = function (wagner) {
         }
     }));
 
-    user.post('/selectsubject', wagner.invoke(function (Subject) {
-        console.log("POST user/selectsubject");
+    user.post('/selectsubject', wagner.invoke(function (Subject, MessageNR) {
         return function(req, res) {
             Subject.findOne({_id: req.body.subject}, function(err, subject){
                 if(!subject){
                     res.status(404).send('Subject not found');
                 } else {
                     var blindedPseudonym = bigInt(req.body.blindedPseudonym);
-                    console.log('blindedPseudonym: ',blindedPseudonym);
-                    //var blindedSignedPs = blindedPseudonym.modPow(keys.privateKey.d,keys.publicKey.n);
+
                     var blindedSignedPs = blindedPseudonym.modPow(subject.d,subject.n);
-                    console.log('blindedSignedPs: ',blindedSignedPs);
-                    res.status(200).send(blindedSignedPs.toString(10));
+                    
+                    var hash = CryptoJS.SHA1(blindedSignedPs.toString(10)).toString(),
+                        identData = createId(),
+                        keyMsg = createId(),
+                        proofString = "SERVER" + "AAA" + identData + "AAA" + hash,
+                        proofBigInt = bigInt(proofString.toString('hex'), 16),
+                        proofOrg = keys.privateKey.encrypt(proofBigInt),
+                        msgEncrypt = CryptoJS.AES.encrypt(blindedSignedPs.toString(10), keyMsg).toString(),
+                        message = {
+                            "identData": identData,
+                            "data": msgEncrypt,
+                            "PO": proofOrg,
+                            "publicKey": keys.publicKey
+                        };
+
+                    var newMessageNR = new MessageNR({
+                        source: "TTPServer",
+                        destiny: req.body.blindedPseudonym,
+                        dataC: msgEncrypt,
+                        key: keyMsg,
+                        dataCK: blindedSignedPs.toString(10),
+                        identData: identData
+                    });
+                    
+                    newMessageNR.save(function (err) {
+                        if (!err) {
+                            res.status(200).send(message);
+                        } else {
+                            console.log(err);
+                            if (err.name == 'ValidationError') {
+                                res.status(400).send('Validation error');
+                            } else {
+                                res.status(500).send('Server error');
+                            }
+                        }
+                    });
                 }
             });
         }
@@ -249,7 +282,7 @@ module.exports = function (wagner) {
 
     user.post('/register', wagner.invoke(function (User) {
         return function(req, res) {
-            User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
+            User.register(new User({ username : req.body.username, type: req.body.type }), req.body.password, function(err, user) {
                 if (err) {
                     return res.status(500).send(err);
                 }
@@ -261,7 +294,6 @@ module.exports = function (wagner) {
 
     user.post('/login',passport.authenticate('local'), function(req, res) {
         wagner.invoke(function(User){
-            console.log("POST/ user/login");
             User.findOne({username: req.body.username}, function(err, user){
                 var loginData = {
                     nTTP: keys.publicKey.n.toString(10),
@@ -278,5 +310,16 @@ module.exports = function (wagner) {
             res.status(200).send("pong!");
         }}));
 
+    function createId() {
+        return Math.random().toString(36).substr(2, 9);
+    }
+
+    user.get('/getSubjects',wagner.invoke(function(Subject){
+        Subject.find(function(err,subjects){
+            if(err) res.status(400);
+            else res.status(200).send(subjects);
+        })
+    }));
+    
     return user;
 };

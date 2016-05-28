@@ -9,6 +9,7 @@ var app = express();
 app.use(cors());
 
 app.use('/survey', require('./routes/survey')(wagner));
+app.use('/resolvedsurvey', require('./routes/resolvedSurvey')(wagner));
 
 app.use(express.static('www'));
 
