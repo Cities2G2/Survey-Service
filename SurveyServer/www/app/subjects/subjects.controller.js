@@ -16,15 +16,26 @@ function subjectController($window, $scope, bigInt, subjectsService,$q){
     vm.postResults = postResults;
 
     function selectSubject(){
-        subjectsService.selectSubject(vm.nTTP, vm.eTTP, vm.keys, vm.subjectSelected)
-            .then(function successCallback(response) {
-                $scope.$parent.$broadcast('postPseudonym', response);
-                postSurvey(vm.subjectSelected);
+        subjectsService.getSubjectN(vm.subjectSelected)
+            .then(function successCallback(response){
+                console.log(response);
+                $scope.$parent.$broadcast('getN', response.data.n);
+                $scope.$parent.$broadcast('getE', response.data.e);
+                subjectsService.selectSubject(response.data.n, response.data.e, vm.keys, vm.subjectSelected)
+                    .then(function successCallback(response) {
+                        $scope.$parent.$broadcast('postPseudonym', response);
+                        postSurvey(vm.subjectSelected);
+                    })
+                    .catch(function errorCallback(response) {
+                        alert('Ha sucedido un error');
+                        console.log(response);
+                    })
             })
-            .catch(function errorCallback(response) {
+            .catch(function errorCallback(response){
                 alert('Ha sucedido un error');
                 console.log(response);
             })
+
     }
 
 

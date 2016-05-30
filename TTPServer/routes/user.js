@@ -239,12 +239,12 @@ module.exports = function (wagner) {
         return function(req, res) {
             Subject.findOne({_id: req.body.subject}, function(err, subject){
                 if(!subject){
-                    res.status(404).send('Subject not found');
+                    res.status(404).send('Subject not found selectsubject');
                 } else {
                     var blindedPseudonym = bigInt(req.body.blindedPseudonym);
-
+                    console.log("Blinded pseudonym",blindedPseudonym);
                     var blindedSignedPs = blindedPseudonym.modPow(subject.d,subject.n);
-                    
+                    console.log("blinded signed ps", blindedSignedPs);
                     var hash = CryptoJS.SHA1(blindedSignedPs.toString(10)).toString(),
                         identData = createId(),
                         keyMsg = createId(),

@@ -23,7 +23,9 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
                 "blindedPseudonym": blindPs.toString(10),
                 "subject": subjectSelected
             };
-
+            console.log("N del cliente es.", n.toString(10));
+            console.log("N de la asig.", nTTP_bi.toString(10));
+            console.log("blindedps",blindPs);
         $http({
             method: 'POST',
             url: uri,
@@ -44,6 +46,7 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
                                 var bytes  = CryptoJS.AES.decrypt(blindedSignedPsCrypto, response.data.key);
                                 var blindedSignedPs = bytes.toString(CryptoJS.enc.Utf8);
                                 var blindedSignedPsBI = bigInt(blindedSignedPs.toString('hex'), 16);
+                                console.log("blinded signed ps",blindedSignedPsBI);
                                 var signedPs = blindedSignedPsBI.multiply(rsaFunctions.modInv(r,nTTP_bi));
                                 deferred.resolve(signedPs);
                             }
@@ -59,6 +62,23 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
         });
 
         return deferred.promise;
+    };
+
+    this.getSubjectN = function(subject){
+        var deferred = $q.defer(),
+            uri = 'http://localhost:3002/user/getSubjects/' + subject;
+            $http({
+            method: 'GET',
+            url: uri,
+            headers: {'Content-Type': 'application/json; charset=utf-8'}
+        }).then(function successCallback(response){
+
+           deferred.resolve(response);
+        }, function errorCallback(response){
+            deferred.reject(response);
+        });
+        return deferred.promise;
+
     };
 
     function getKeyTTP(response, keys){

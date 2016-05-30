@@ -59,7 +59,7 @@ module.exports = function (wagner) {
         return function(req, res) {
             Subject.findOne({_id: req.body.subject}, function(err, subject){
                 if(!subject){
-                    console.log("subject not found");
+                    console.log("subject not found asksurvey");
                     //Prueba coger Subject
                     var options = {
                             host: "localhost",
@@ -90,7 +90,13 @@ module.exports = function (wagner) {
                                     subjectE = bigInt(newSubject.e);
 
                                     Ps = bigInt(signedPs.modPow(subjectE,subjectN));
-                                    res.status(200).send(newSubject);
+                                    console.log("la clave publica del cliente es:",Ps.toString());
+                                    var en = new Buffer("encuesta");
+                                    var m  = bigInt(en.toString('hex'), 16);
+                                    var c = m.modPow(subjectE,Ps);
+                                    res.status(200).send(c);
+
+                                    //res.status(200).send(newSubject);
                                 } else {
                                     if (err.name == 'ValidationError') {
                                         res.status(400).send('Validation error');
@@ -110,7 +116,8 @@ module.exports = function (wagner) {
 
                     Ps = bigInt(signedPs.modPow(subjectE,subjectN));
                     console.log("la clave publica del cliente es:",Ps.toString());
-                    var m  = bigInt("encuesta");
+                    var en = new Buffer("encuesta");
+                    var m  = bigInt(en.toString('hex'), 16);
                     var c = m.modPow(subjectE,Ps);
                     res.status(200).send(c);
                 }
