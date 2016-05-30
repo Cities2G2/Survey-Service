@@ -93,8 +93,10 @@ module.exports = function (wagner) {
                                     console.log("la clave publica del cliente es:",Ps.toString());
                                     var en = new Buffer("encuesta");
                                     var m  = bigInt(en.toString('hex'), 16);
+                                    console.log("m", m.toString(10));
                                     var c = m.modPow(subjectE,Ps);
-                                    res.status(200).send(c);
+                                    console.log("c", c.toString(10));
+                                    res.status(200).send(c.toString(10));
 
                                     //res.status(200).send(newSubject);
                                 } else {
@@ -113,13 +115,15 @@ module.exports = function (wagner) {
                     signedPs = bigInt(req.body.seudonimo);
                     subjectN = bigInt(subject.n);
                     subjectE = bigInt(subject.e);
-
+                    console.log("signedps que llega",signedPs.toString());
                     Ps = bigInt(signedPs.modPow(subjectE,subjectN));
                     console.log("la clave publica del cliente es:",Ps.toString());
                     var en = new Buffer("encuesta");
                     var m  = bigInt(en.toString('hex'), 16);
+                    console.log("m", m.toString(10));
                     var c = m.modPow(subjectE,Ps);
-                    res.status(200).send(c);
+                    console.log("c", c.toString(10));
+                    res.status(200).send(c.toString());
                 }
             });
         }

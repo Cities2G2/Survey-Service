@@ -12,6 +12,7 @@ function mainController($window, $scope, rsaFunctions, bigInt){
     vm.nTTP = "";
     vm.subjects = [];
     vm.pageLocation = "";
+    vm.subjectSelected = "";
 
     $scope.$on('$locationChangeStart', function(event, next, current) {
 
@@ -34,6 +35,10 @@ function mainController($window, $scope, rsaFunctions, bigInt){
 
     $scope.$on('postPseudonym', function(evt, pseudonym){
         vm.pseudonym = pseudonym;
+    });
+
+    $scope.$on('getSubject', function(evt, subject){
+        vm.subjectSelected = subject;
     });
 
 }

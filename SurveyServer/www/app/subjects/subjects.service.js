@@ -45,7 +45,7 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
                             if (identData == response.data.identData){
                                 var bytes  = CryptoJS.AES.decrypt(blindedSignedPsCrypto, response.data.key);
                                 var blindedSignedPs = bytes.toString(CryptoJS.enc.Utf8);
-                                var blindedSignedPsBI = bigInt(blindedSignedPs.toString('hex'), 16);
+                                var blindedSignedPsBI = bigInt(blindedSignedPs.toString());
                                 console.log("blinded signed ps",blindedSignedPsBI);
                                 var signedPs = blindedSignedPsBI.multiply(rsaFunctions.modInv(r,nTTP_bi));
                                 deferred.resolve(signedPs);
@@ -120,7 +120,7 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
         return deferred.promise;
     }
     
-    this.postSurvey = function(seudonimo,subject){
+    this.postSurvey = function(seudonimo,subject,keys){
         var deferred = $q.defer(),
             uri = 'http://localhost:3000/survey/askSurvey',
             datos = {
@@ -134,17 +134,17 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
             data: JSON.stringify(datos),
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
-           
-            /*var n = bigInt(keys.publicKey.n.toString(10)),
+           console.log("res encuesta cifrado",response.data.toString(10));
+            var n = bigInt(keys.publicKey.n.toString(10)),
                 d = bigInt(keys.privateKey.d.toString(10));
-            var resBI = bigInt(response.data);
+            var resBI = bigInt(response.data.toString(10));
             console.log(resBI.toString(10));
             var res = resBI.modPow(d,n);
-            console.log("res",res.toString());
-            deferred.resolve(res);
-            */
-            console.log(response);
-            deferred.resolve(response);
+            console.log("res",res.toString(10));
+            deferred.resolve(res.toString(10));
+
+            //console.log(response);
+            //deferred.resolve(response);
         }, function errorCallback(response){
             deferred.reject(response);
         });
