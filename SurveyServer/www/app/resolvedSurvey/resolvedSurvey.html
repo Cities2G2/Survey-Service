@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel panel-default">
+                <div class="panel-heading" >Enquestes d'anys anteriors</div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Period</th>
+                        <th>Ver</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="resolved in resolvedSurveyCtrl.surveys">
+                    <tr>
+                        <th>{{resolved.subject}}</th>
+                        <th>{{resolved.period}}</th>
+                        <th><button type="button" class="btn " ng-click="clickToView(resolved.id)" >View</button></th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
