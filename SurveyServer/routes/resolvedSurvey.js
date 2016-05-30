@@ -48,7 +48,7 @@ module.exports = function (wagner) {
 
             newResolvedSurvey.save(function (err) {
                 if (!err) {
-                    res.status(200).send(serverRes);
+                    res.status(200).send('OK');
                 } else {
                     if (err.name == 'ValidationError') {
                         res.status(400).send('Validation error');

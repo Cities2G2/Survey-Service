@@ -9,10 +9,7 @@ function surveyController($window, $scope, $http) {
     console.log('Survey controller');
     console.log($scope.mainCtrl.pseudonym);
     console.log($scope.mainCtrl.pagelocation);
-
-
-
-
+    
     vm.postSurvey = postSurvey;
     vm.getData = getData;
 

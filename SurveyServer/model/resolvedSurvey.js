@@ -14,6 +14,9 @@ var resolvedSurveySchema = {
     subject: {
         type: String
     },
+    teacher:{
+        type: String
+    },
     period: {
         type: String
     },

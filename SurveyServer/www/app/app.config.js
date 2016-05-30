@@ -31,6 +31,11 @@ function config($routeProvider){
             controller: 'resultsController',
             controllerAs: 'resultsCtrl'
         })
+        .when('/resolvedSurvey',{
+            templateUrl: '/app/resolvedSurvey/resolvedSurvey.html',
+            controller: 'resolvedSurveyController',
+            controllerAs: 'resolvedSurveyCtrl'
+        })
         .otherwise({
             redirectTo: '/login'
         });

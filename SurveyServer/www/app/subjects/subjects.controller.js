@@ -9,78 +9,43 @@ function subjectController($window, $scope, bigInt, subjectsService,$q){
 
     vm.selectSubject = selectSubject;
     vm.subjects = $scope.mainCtrl.subjects;
-    //vm.nTTP=$scope.mainCtrl.nTTP;
-    //vm.eTTP=$scope.mainCtrl.eTTP;
     vm.keys = subjectsService.load();
+    vm.nTTP=$scope.mainCtrl.nTTP;
+    vm.eTTP=$scope.mainCtrl.eTTP;
     vm.postSurvey = postSurvey;
     vm.postResults = postResults;
 
-
     function selectSubject(){
-        getParams(vm.subjectSelected)
+        subjectsService.selectSubject(vm.nTTP, vm.eTTP, vm.keys, vm.subjectSelected)
             .then(function successCallback(response) {
-                (subjectsService.selectSubject(vm.nTTP, vm.eTTP, vm.keys, vm.subjectSelected)
-                    .then(function successCallback(response) {
-                        alert('ya tienes tu pseudonimo firmado');
-                        console.log('responsee', response.toString());
-                        console.log("el subjec selected es: ", vm.subjectSelected);
-                        $scope.$parent.$broadcast('postPseudonym', response);
-                        postSurvey(vm.subjectSelected);
-                        $scope.mainCtrl.pageLocation = "survey";
-                        $window.location.href = '#/survey';
-                    })
-                    .catch(function errorCallback(response) {
-                        console.log(response);
-                    }));
+                $scope.$parent.$broadcast('postPseudonym', response);
+                postSurvey(vm.subjectSelected);
+            })
+            .catch(function errorCallback(response) {
+                alert('Ha sucedido un error');
+                console.log(response);
             })
     }
 
 
 
     function postSurvey(subject){
-
-
-        //var texto = 'DaniVilesFlorejachs';
         console.log('El seudónimo que envio es: '+ $scope.mainCtrl.pseudonym.toString());
         subjectsService.postSurvey($scope.mainCtrl.pseudonym.toString(),subject)
             .then(function successCallback(response){
-                if(res.equals("encuesta")){
+                console.log(response);
+                /*if(res.equals("encuesta")){
                     $scope.mainCtrl.pageLocation="survey";
                     $window.location.href = '#/survey';
                 }else{
                     alert("Tu pseudonimo no es correcto");
-                }
-
-
+                }*/
             })
             .catch(function errorCallback(response){
                 console.log(response);
             });
     }
-
-
-    vm.getParams = getParams;
-
-    function getParams(subject){
-        var deferred = $q.defer();
-
-        subjectsService.getParams(subject)
-            .then(function successCallback(response){
-                console.log('response',response);
-                vm.nTTP = response.data.n;
-                vm.eTTP = response.data.e;
-                console.log('vm.nTTP',vm.nTTP);
-                console.log('vm.eTTP',vm.eTTP);
-                deferred.resolve(response);
-
-
-            })
-            .catch(function errorCallback(response){
-                deferred.reject(response);
-            });
-        return deferred.promise;
-    }
-
+    
     vm.postResults = postResults;
 
     function postResults(){

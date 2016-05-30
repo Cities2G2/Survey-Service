@@ -11,8 +11,6 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
     };
 
     this.selectSubject = function(nTTP, eTTP, keys, subjectSelected){
-
-
         var nTTP_bi = bigInt(nTTP),
             eTTP_bi = bigInt(eTTP),
             deferred = $q.defer(),
@@ -21,18 +19,10 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
             e = bigInt(keys.publicKey.e.toString(10)),
             blindPs = n.multiply(r.modPow(eTTP_bi, nTTP_bi)).mod(nTTP_bi),
             uri = 'http://localhost:3002/user/selectsubject',
-                postInfo = {
-                    "blindedPseudonym": blindPs.toString(10),
-                    "subject": subjectSelected
-                };
-
-        console.log('Nttp es: ',nTTP_bi);
-        console.log('Ettp es: ',eTTP_bi);
-        console.log('R es: ',r);
-        console.log('N es: ',n);
-        console.log('blindPs: ',blindPs);
-
-        var toBlind = keys.publicKey.e.toString(10) + '/' + keys.publicKey.n.toString(10);
+            postInfo = {
+                "blindedPseudonym": blindPs.toString(10),
+                "subject": subjectSelected
+            };
 
         $http({
             method: 'POST',
@@ -40,7 +30,6 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
             data: JSON.stringify(postInfo),
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
-
             console.log(response);
             var blindedSignedPsCrypto = response.data.data,
                 identData = response.data.identData;
@@ -110,8 +99,7 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
         });
         return deferred.promise;
     }
-
-    //Dani
+    
     this.postSurvey = function(seudonimo,subject){
         var deferred = $q.defer(),
             uri = 'http://localhost:3000/survey/askSurvey',
@@ -119,19 +107,24 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
                 "seudonimo": seudonimo,
                 "subject": subject
             };
+        console.log(datos);
         $http({
             method: 'POST',
             url: uri,
             data: JSON.stringify(datos),
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
-           var n = bigInt(keys.publicKey.n.toString(10)),
+           
+            /*var n = bigInt(keys.publicKey.n.toString(10)),
                 d = bigInt(keys.privateKey.d.toString(10));
             var resBI = bigInt(response.data);
             console.log(resBI.toString(10));
             var res = resBI.modPow(d,n);
             console.log("res",res.toString());
             deferred.resolve(res);
+            */
+            console.log(response);
+            deferred.resolve(response);
         }, function errorCallback(response){
             deferred.reject(response);
         });

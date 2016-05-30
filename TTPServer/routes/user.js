@@ -6,12 +6,13 @@ var _ = require('underscore');
 var rsa = require('../src/rsa-big-integer.js');
 var bigInt = require('../src/big-integer-scii.js');
 var CryptoJS = require("crypto-js");
-keys = rsa.generateKeys(512);
+//keys = rsa.generateKeys(512);
 
 module.exports = function (wagner) {
     var user = express.Router();
     user.use(bodyparser.json());
 
+    /*
     wagner.invoke(function(Subject, User){
 
         var newSubject1 = new Subject({
@@ -137,7 +138,7 @@ module.exports = function (wagner) {
             }
         });
     });
-
+    */
     user.get('/', wagner.invoke(function (User) {
         return function (req, res) {
             User.find(function (err, users) {
@@ -147,19 +148,36 @@ module.exports = function (wagner) {
         }
     }));
 
+    user.get('/getSubjects',wagner.invoke(function(Subject){
+        return function (req,res) {
+            Subject.find({}, {_id:1, name:1, n:1, e:1}, function (err, subjects) {
+                if (err) res.status(400);
+                else res.status(200).send(subjects);
+            })
+        }
+    }));
+
+    user.get('/getSubjects/:subjectId',wagner.invoke(function(Subject){
+        return function (req,res) {
+            Subject.findOne({_id: req.params.subjectId}, {_id:1, name:1, teacher:1, n:1, e:1}, function (err, subject) {
+                if (err) res.status(400);
+                else res.status(200).send(subject);
+            })
+        }
+    }));
+
     user.post('/subject', wagner.invoke(function(Subject){
         return function(req, res) {
             Subject.findOne({name: req.body.name}, function(err, subject){
                 if(!subject){
                     var subjectKeys = rsa.generateKeys(512);
-                    console.log(subjectKeys);
                     var newSubject = new Subject({
                         name: req.body.name,
                         teacher: req.body.teacher,
-                        publicKey: subjectKeys.publicKey,
-                        privateKey: subjectKeys.privateKey
+                        n: subjectKeys.publicKey.n,
+                        e: subjectKeys.publicKey.e,
+                        d: subjectKeys.privateKey.d
                     });
-                    console.log(newSubject);
                     newSubject.save(function(err){
                         if(!err){
                             res.status(200).send(newSubject);
@@ -254,7 +272,6 @@ module.exports = function (wagner) {
                         if (!err) {
                             res.status(200).send(message);
                         } else {
-                            console.log(err);
                             if (err.name == 'ValidationError') {
                                 res.status(400).send('Validation error');
                             } else {
@@ -267,6 +284,7 @@ module.exports = function (wagner) {
         }
     }));
 
+    /*
     user.post('/getParams', wagner.invoke(function (Subject) {
         return function (req, res) {
             Subject.findOne({_id: req.body.subject},function (err, subject) {
@@ -279,6 +297,7 @@ module.exports = function (wagner) {
             });
         }
     }));
+    */
 
     user.post('/register', wagner.invoke(function (User) {
         return function(req, res) {
@@ -308,18 +327,12 @@ module.exports = function (wagner) {
     user.get('/ping', wagner.invoke(function () {
         return function(req, res){
             res.status(200).send("pong!");
-        }}));
+        }
+    }));
 
     function createId() {
         return Math.random().toString(36).substr(2, 9);
     }
-
-    user.get('/getSubjects',wagner.invoke(function(Subject){
-        Subject.find(function(err,subjects){
-            if(err) res.status(400);
-            else res.status(200).send(subjects);
-        })
-    }));
     
     return user;
 };
