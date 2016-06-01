@@ -13,6 +13,10 @@ function mainController($window, $scope, rsaFunctions, bigInt) {
     vm.subjects = [];
     vm.pageLocation = "";
     vm.subjectSelected = "";
+    vm.subject = "";
+    vm.period = "";
+    vm.questions = "";
+    vm.teacher = "";
 
     $scope.$on('$locationChangeStart', function (event, next, current) {
 
@@ -63,6 +67,11 @@ function mainController($window, $scope, rsaFunctions, bigInt) {
 
     $scope.$on('getSubject', function (evt, subject) {
         vm.subjectSelected = subject;
+
+    });
+
+    $scope.$on('getTeacher', function (evt, teacher) {
+        vm.teacher = teacher;
 
     });
 

@@ -11,11 +11,11 @@
                         <th>Ver</th>
                     </tr>
                     </thead>
-                    <tbody ng-repeat="resolved in resolvedSurveyCtrl.surveys">
+                    <tbody ng-repeat="resolved in teacherCtrl.surveys">
                     <tr>
                         <th>{{resolved.subject}}</th>
                         <th>{{resolved.period}}</th>
-                        <th><button type="button" class="btn " ng-click="clickToView(resolved.id)" >View</button></th>
+                        <th><button type="button" class="btn " ng-click="teacherCtrl.clickToView(resolved._id)" >View</button></th>
                     </tr>
                     </tbody>
                 </table>

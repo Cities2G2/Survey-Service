@@ -16,8 +16,16 @@ function loginController($window, $scope, bigInt, loginService){
                 $scope.$parent.$broadcast('getN', response.data.nTTP);
                 $scope.$parent.$broadcast('getE', response.data.eTTP);
 
-                $scope.mainCtrl.pageLocation="subjects";
-                $window.location.href = '#/subjects'
+                if (response.data.type == "teacher"){
+                    $scope.$parent.$broadcast('getTeacher', vm.userLogin);
+                    $scope.mainCtrl.pageLocation="teacher";
+                    $window.location.href = '#/teacher'
+                }else {
+
+                    $scope.mainCtrl.pageLocation = "subjects";
+                    $window.location.href = '#/subjects'
+                }
+
             })
             .catch(function errorCallback(response){
                 console.log(response);
