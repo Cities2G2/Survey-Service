@@ -175,7 +175,8 @@ module.exports = function (wagner) {
                 var loginData = {
                     nTTP: keys.publicKey.n.toString(10),
                     eTTP: keys.publicKey.e.toString(10),
-                    subjects: user.subjects
+                    subjects: user.subjects,
+                    type: user.type
                 };
                 res.status(200).send(loginData);
             })

@@ -3,6 +3,8 @@
   "dependencies": {
     "angular": "latest",
     "angular-route": "latest",
+    "angular-biginteger": "latest",
+    "angular-jsbn-big-integer": "latest",
     "bootstrap":"3.3.6"
   }
 }
