@@ -17,6 +17,11 @@ function mainController($window, $scope, rsaFunctions, bigInt){
     $scope.$on('$locationChangeStart', function(event, next, current) {
 
         if (vm.pageLocation == ""){
+            vm.eTTP = "";
+            vm.nTTP = "";
+            vm.subjects = [];
+            vm.subjectSelected = "";
+            vm.token = "";
             $window.location.href='#/login';
         }
     });

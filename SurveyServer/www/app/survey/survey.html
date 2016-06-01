@@ -34,11 +34,11 @@
                             <p>Selecciona el grau de satisfacció (1: molt en desacord i 5: molt en acord)</p>
                             <ul>
                                 <li ng-repeat="x in names">
-                                    {{ x }}  <input type="radio" name="gender-{{ x }}" value="1" checked id='{{$index}}' ng-value='$index' ng-model='$parent.selectedItem'> 1
-                                    <input type="radio" name="gender-{{ x }}" value="2" id='{{$index}}' ng-value='$index' ng-model='$parent.selectedItem'/> 2
-                                    <input type="radio" name="gender-{{ x }}" value="3" id='{{$index}}' ng-value='$index' ng-model='$parent.selectedItem'/> 3
-                                    <input type="radio" name="gender-{{ x }}" value="4" id='{{$index}}' ng-value='$index' ng-model='$parent.selectedItem'/> 4
-                                    <input type="radio" name="gender-{{ x }}" value="5" id='{{$index}}' ng-value='$index' ng-model='$parent.selectedItem'/> 5</li>
+                                    {{ x }}  <input type="radio" name="gender-{{ x }}" value="1" checked> 1
+                                    <input type="radio" name="gender-{{ x }}" value="2"/> 2
+                                    <input type="radio" name="gender-{{ x }}" value="3"/> 3
+                                    <input type="radio" name="gender-{{ x }}" value="4"/> 4
+                                    <input type="radio" name="gender-{{ x }}" value="5"/> 5</li>
                             </ul>
 
                         </div>

@@ -30,7 +30,7 @@ module.exports = function (wagner) {
             ResolvedSurvey.findOne({_id: req.params.resolvedSurveyID}, function (err, resolvedSurvey) {
                 if (err) res.status(500).send('Database error');
                 if (resolvedSurvey){
-                    res.status(200).send(resolvedSurveys);
+                    res.status(200).send(resolvedSurvey);
                 } else {
                     res.status(404).send('Survey not found');
                 }

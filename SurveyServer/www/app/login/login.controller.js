@@ -15,6 +15,7 @@ function loginController($window, $scope, bigInt, loginService){
                 $scope.$parent.$broadcast('getSubjects', response.data.subjects);
                 $scope.$parent.$broadcast('getN', response.data.nTTP);
                 $scope.$parent.$broadcast('getE', response.data.eTTP);
+
                 $scope.mainCtrl.pageLocation="subjects";
                 $window.location.href = '#/subjects'
             })
