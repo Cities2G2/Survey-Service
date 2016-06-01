@@ -19,7 +19,7 @@ function mainController($window, $scope, rsaFunctions, bigInt) {
     vm.questions = "";
     vm.teacher = "";
 
-    $scope.$on('$locationChangeStart', function (event, next, current) {
+
 
 
     vm.keys = "";
@@ -75,7 +75,6 @@ function mainController($window, $scope, rsaFunctions, bigInt) {
         vm.subjectSelected = subject;
 
     });
-
 
     $scope.$on('getTeacher', function (evt, teacher) {
         vm.teacher = teacher;
