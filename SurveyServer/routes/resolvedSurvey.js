@@ -27,7 +27,9 @@ module.exports = function (wagner) {
 
     resolvedSurvey.get('/resolvedById/:resolvedSurveyID', wagner.invoke(function (ResolvedSurvey) {
         return function (req, res) {
+            console.log("Me pide los resultados de la encuesta con el id: " + req.params.resolvedSurveyID);
             ResolvedSurvey.findOne({_id: req.params.resolvedSurveyID}, function (err, resolvedSurvey) {
+                console.log("Yo le envio estos resultados: " + resolvedSurvey);
                 if (err) res.status(500).send('Database error');
                 if (resolvedSurvey){
                     res.status(200).send(resolvedSurvey);
