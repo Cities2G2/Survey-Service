@@ -4,7 +4,7 @@ angular
     .module('surveyApp')
     .controller('mainController', mainController);
 
-function mainController($window, $scope, rsaFunctions, bigInt){
+function mainController($window, $scope, rsaFunctions, bigInt) {
     var vm = this;
 
     vm.token = "";
@@ -14,42 +14,43 @@ function mainController($window, $scope, rsaFunctions, bigInt){
     vm.pageLocation = "";
     vm.subjectSelected = "";
 
-    $scope.$on('$locationChangeStart', function(event, next, current) {
+    $scope.$on('$locationChangeStart', function (event, next, current) {
 
-        if (vm.pageLocation == ""){
-            $window.location.href='#/login';
+        if (vm.pageLocation == "") {
+            $window.location.href = '#/login';
         }
     });
 
-    $scope.$on('getSubjects', function(evt, subjects){
+    $scope.$on('getSubjects', function (evt, subjects) {
         vm.subjects = subjects;
     });
 
-    $scope.$on('getN', function(evt, n){
+    $scope.$on('getN', function (evt, n) {
         vm.nTTP = n;
     });
 
-    $scope.$on('getE', function(evt, e){
+    $scope.$on('getE', function (evt, e) {
         vm.eTTP = e;
     });
 
-    $scope.$on('postPseudonym', function(evt, pseudonym){
+    $scope.$on('postPseudonym', function (evt, pseudonym) {
         vm.pseudonym = pseudonym;
     });
 
 
-    $scope.$on('getSubjectResolved', function(evt, subject){
+    $scope.$on('getSubjectResolved', function (evt, subject) {
         vm.subject = subject;
     });
 
-    $scope.$on('getPeriodResolved', function(evt, period){
+    $scope.$on('getPeriodResolved', function (evt, period) {
         vm.period = period;
     });
 
-    $scope.$on('getQuestionsResolved', function(evt, questions){
+    $scope.$on('getQuestionsResolved', function (evt, questions) {
         vm.questions = questions;
+    });
 
-    $scope.$on('getSubject', function(evt, subject){
+    $scope.$on('getSubject', function (evt, subject) {
         vm.subjectSelected = subject;
 
     });
