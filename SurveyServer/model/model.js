@@ -17,10 +17,14 @@ module.exports = function(wagner) {
     var Subject =
         mongoose.model('Subject', require('./subject'), 'subjects');
 
+    var MessageNR =
+        mongoose.model('MessageNR', require('./messageNR'), 'MessagesNR');
+
     var models = {
         Survey: Survey,
         Subject: Subject,
-        ResolvedSurvey: ResolvedSurvey
+        ResolvedSurvey: ResolvedSurvey,
+        MessageNR: MessageNR
     };
 
     // To ensure DRY-ness, register factories in a loop

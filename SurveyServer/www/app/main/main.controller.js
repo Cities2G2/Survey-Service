@@ -13,7 +13,8 @@ function mainController($window, $scope, rsaFunctions, bigInt){
     vm.subjects = [];
     vm.pageLocation = "";
     vm.subjectSelected = "";
-
+    vm.keys = "";
+    
     $scope.$on('$locationChangeStart', function(event, next, current) {
 
         if (vm.pageLocation == ""){
@@ -39,6 +40,10 @@ function mainController($window, $scope, rsaFunctions, bigInt){
 
     $scope.$on('getSubject', function(evt, subject){
         vm.subjectSelected = subject;
+    });
+
+    $scope.$on('setKeys', function(evt, keys){
+        vm.keys = keys;
     });
 
 }

@@ -10,6 +10,7 @@ function subjectController($window, $scope, bigInt, subjectsService,$q){
     vm.selectSubject = selectSubject;
     vm.subjects = $scope.mainCtrl.subjects;
     vm.keys = subjectsService.load();
+    $scope.$parent.$broadcast('setKeys', vm.keys);
     vm.nTTP=$scope.mainCtrl.nTTP;
     vm.eTTP=$scope.mainCtrl.eTTP;
     vm.postSurvey = postSurvey;
@@ -38,9 +39,7 @@ function subjectController($window, $scope, bigInt, subjectsService,$q){
             })
 
     }
-
-
-
+    
     function postSurvey(subject,keys){
         console.log('El seudónimo que envio es: '+ $scope.mainCtrl.pseudonym.toString());
         subjectsService.postSurvey($scope.mainCtrl.pseudonym.toString(),subject,keys)
@@ -57,7 +56,7 @@ function subjectController($window, $scope, bigInt, subjectsService,$q){
                 console.log(response);
             });
     }
-    
+
     vm.postResults = postResults;
 
     function postResults(){
@@ -77,5 +76,4 @@ function subjectController($window, $scope, bigInt, subjectsService,$q){
          console.log(response);
          });*/
     }
-
 }
