@@ -36,4 +36,16 @@ function mainController($window, $scope, rsaFunctions, bigInt){
         vm.pseudonym = pseudonym;
     });
 
+    $scope.$on('getSubjectResolved', function(evt, subject){
+        vm.subject = subject;
+    });
+
+    $scope.$on('getPeriodResolved', function(evt, period){
+        vm.period = period;
+    });
+
+    $scope.$on('getQuestionsResolved', function(evt, questions){
+        vm.questions = questions;
+    });
+
 }
