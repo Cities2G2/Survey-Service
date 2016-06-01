@@ -72,7 +72,6 @@ function subjectsService($http, $q, rsaFunctions, bigInt){
             url: uri,
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function successCallback(response){
-
            deferred.resolve(response);
         }, function errorCallback(response){
             deferred.reject(response);

@@ -10,35 +10,6 @@ module.exports = function (wagner) {
     var survey = express.Router();
     survey.use(bodyparser.json());
     
-    /*
-    load();
-    function load(){
-        var subjects = [];
-        var options = {
-            host: "localhost",
-            port: 3002,
-            path: '/user/getSubjects',
-            agent: false
-        };
-
-        var reqPost = http.get(options, function(response){
-            response.setEncoding('utf8');
-            response.on('data', function (chunk) {
-                subjects = chunk;
-                JSON.parse(subjects);
-                console.log(subjects);
-                wagner.invoke(function (Subject) {
-                    _.each(subjects, function(value, key) {
-                        console.log(value);
-                        console.log(key);
-                    });
-                })
-            });
-        });
-        reqPost.end();
-    }
-    */
-    
     survey.get('/', wagner.invoke(function (Subject) {
         return function (req, res) {
             Subject.find(function (err, subjects) {
@@ -47,13 +18,56 @@ module.exports = function (wagner) {
             });
         }
     }));
+
+    survey.get('/:subject', wagner.invoke(function(Survey){
+        return function (req,res){
+            Survey.findOne({subject: req.params.subject}, function (err, survey){
+                if(err) res.status(500).send('Database error');
+                else res.status(200).send(survey);
+            })
+        }
+    }));
     
     survey.get('/ping', wagner.invoke(function () {
         return function(req, res){
             res.status(200).send("pong!");
         }}));
 
+    survey.get('/getResults/:subject', wagner.invoke(function (Survey) {
+        return function (req, res) {
+            console.log("GET - /object/:subject");
+            console.log('La asignatura que me pide results.controller es: '+ req.body.surveySubject);
+        }
+    }));
 
+    survey.post('/', wagner.invoke(function (Survey){
+        return function (req, res){
+            Survey.findOne({subject: req.body.subject}, function(err, subject){
+                if(!subject){
+                    var newSurvey = Survey({
+                        subject: req.body.subject,
+                        teacher: req.body.teacher,
+                        period: req.body.period,
+                        questions: req.body.questions
+                    });
+
+                    newSurvey.save(function (err) {
+                        if (!err) {
+                            res.status(200).send('OK');
+                        } else {
+                            if (err.name == 'ValidationError') {
+                                res.status(400).send('Validation error');
+                            } else {
+                                res.status(500).send('Server error');
+                            }
+                        }
+                    });
+                } else {
+                    res.status(500).send('This survey already exists');
+                }
+            })
+        }
+    }));
 
     survey.post('/askSurvey', wagner.invoke(function(Survey,Subject){
         return function(req, res) {
@@ -129,16 +143,7 @@ module.exports = function (wagner) {
         }
     }));
 
-    survey.get('/getResults/:subject', wagner.invoke(function (Survey) {
-        return function (req, res) {
-            console.log("GET - /object/:subject");
-            console.log('La asignatura que me pide results.controller es: '+ req.body.surveySubject);
-           /* Object.find(function (err, objects) {
-                if (err) res.send(500, "Mongo Error");
-                else res.send(200, objects);
-            });*/
-        }
-    }));
+
     
     return survey;
 };
