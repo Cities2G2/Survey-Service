@@ -27,6 +27,15 @@ module.exports = function (wagner) {
             })
         }
     }));
+
+    survey.get('/subjectById/:subject', wagner.invoke(function(Subject){
+        return function (req,res){
+            Subject.findOne({_id: req.params.subject}, function (err, subject){
+                if(err) res.status(500).send('Database error');
+                else res.status(200).send(subject);
+            })
+        }
+    }));
     
     survey.get('/ping', wagner.invoke(function () {
         return function(req, res){

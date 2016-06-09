@@ -117,21 +117,30 @@ function surveyController($window, $scope, $http, bigInt, $q) {
     }
 
     function load(){
-        //DATOS FORZADOS
-        console.log('DATOS FORZADOS');
-        console.log($scope.mainCtrl.subjectSelected);
-        var uri = 'http://localhost:3000/survey/cities';
+        var uri = 'http://localhost:3000/survey/subjectById/' + $scope.mainCtrl.subjectSelected;
 
         return $http({
             method: 'GET',
             url: uri,
             headers: {'Content-Type': 'application/json; charset=utf-8'}
         }).then(function succesCallback(response){
-            vm.survey = response.data;
+            uri = 'http://localhost:3000/survey/' + response.data.name;
+            $http({
+                method: 'GET',
+                url: uri,
+                headers: {'Content-Type': 'application/json; charset=utf-8'}
+            }).then(function succesCallback(response){
+                vm.survey = response.data;
+            }, function errorCallback(response){
+                alert("error");
+                console.log(response);
+            });
         }, function errorCallback(response){
             alert("error");
             console.log(response);
         });
+
+
     }
 
     function createId() {
